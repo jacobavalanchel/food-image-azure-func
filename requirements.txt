@@ -3,3 +3,5 @@
 # Manually managing azure-functions-worker may cause unexpected issues
 
 azure-functions
+https://download.pytorch.org/whl/cpu/torch-2.2.0%2Bcpu-cp311-cp311-linux_x86_64.whl
+ultralytics==8.1.11
