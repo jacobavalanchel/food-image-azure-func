@@ -1,7 +1,7 @@
 import os
-
+from livereload import Server
 from flask import (Flask, redirect, render_template, request,
-                   send_from_directory, url_for)
+                   send_from_directory, send_file ,jsonify , url_for)
 
 app = Flask(__name__)
 
@@ -28,5 +28,22 @@ def hello():
        return redirect(url_for('index'))
 
 
+@app.route('/response_json',methods=['GET'])
+def returnJson():
+     if(request.method == 'GET'): 
+        data = { 
+            "Modules" : 17, 
+            "Subject" : "Data Structures and Algorithms", 
+        } 
+  
+        return jsonify(data) 
+
+
+@app.route('/get_image',methods=['GET'])
+def get_image():
+    filename = 'trial.jpg'
+    return send_file(filename, mimetype='image/jpg')
+
 if __name__ == '__main__':
+
    app.run()
