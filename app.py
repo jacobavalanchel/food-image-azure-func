@@ -40,22 +40,17 @@ def returnJson():
             "Modules": 17,
             "Subject": "Data Structures and Algorithms",
         }
-
         return jsonify(data)
 
 
-@app.route('/get_image', methods=['GET'])
+@app.route('/get_image', methods=['POST'])
 def get_image():
-    filename = 'trial.jpg'
-    return send_file(filename, mimetype='image/jpg')
+    file_name = request.form.get('file_name')
+    return send_file(str(file_name), mimetype='image/jpg')
 
 
 @app.route('/start_recog', methods=['POST'])
 def start_recog():
-    name = request.form.get('name')
-    if name:
-        print('Request for hello page received with name=%s' % name)
-
     # 模型路径
     model = YOLO('best.pt')
 
@@ -78,11 +73,10 @@ def start_recog():
     rel_path = "2091/data.txt"
 
     head, tail = os.path.split(source_img_path_list[0])
-    abs_file_path = os.path.join(script_dir, save_img_path_list[0],tail)
+    abs_file_path = os.path.join(script_dir, save_img_path_list[0], tail)
     print(f"abs_file_path{abs_file_path}")
-    return send_file(str(abs_file_path), mimetype='image/jpg')
 
-    # return {"filename": abs_file_path}
+    return {"filename": abs_file_path}
 
 
 if __name__ == '__main__':
