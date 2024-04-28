@@ -16,11 +16,11 @@ def bpipei(query, choices):
 
 food_name = input("请输入食物名称：\n")
 
-nutrient_dataset_path = 'D:\大学生计算机设计大赛\_atest.txt'
+nutrient_dataset_path = '_atest.txt'
 df_nutrient = pd.read_csv(nutrient_dataset_path, encoding='utf-8')
-glycemic_index_dataset_path = (r'D:\大学生计算机设计大赛\营养素数据集\food GI.csv')
+glycemic_index_dataset_path = 'food GI.csv'
 df_glycemic_index = pd.read_csv(glycemic_index_dataset_path)
-insulin_index_dataset_path = 'D:\大学生计算机设计大赛\营养素数据集\Insulin index.csv'
+insulin_index_dataset_path = 'Insulin index.csv'
 
 df_insulin_index = pd.read_csv(insulin_index_dataset_path)
 df_glycemic_index = df_glycemic_index.dropna()
