@@ -5,4 +5,5 @@ ultralytics
 requests
 pandas
 fuzzywuzzy
+ollama
 flask_cors
