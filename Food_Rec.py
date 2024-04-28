@@ -45,11 +45,12 @@ def food_recognition(image, model, device):
 test_model = VIT.vit_base_patch16_224(num_classes=20)
 test_model.load_state_dict(torch.load("./model/vit.pth"))
 
-# 读取图片
-test_image = Image.open("sample.jpg")
-
 # 定义设备
 test_device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+
+# 读取图片
+test_image = Image.open("sample.jpg")
 
 result = food_recognition(image=test_image, model=test_model, device=test_device)
 
