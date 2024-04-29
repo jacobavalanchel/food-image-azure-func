@@ -50,6 +50,7 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+cover/
 
 # Translations
 *.mo
@@ -82,7 +83,9 @@ profile_default/
 ipython_config.py
 
 # pyenv
-.python-version
+#   For a library or package, you might want to ignore these files since the code is
+#   intended to run in multiple environments; otherwise, check them in:
+# .python-version
 
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
@@ -129,3 +132,31 @@ dmypy.json
 .pyre/
 /.idea/vcs.xml
 /.idea/workspace.xml
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+/.idea/vcs.xml
+/.idea/workspace.xml
+/.idea/vcs.xml
+/.idea/shelf/Uncommitted_changes_before_Merge_at_4_25_2024_10_10_PM_[Changes]/favicon.ico
+/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/favicon.ico
+/.idea/food-recog-flask.iml
+/.idea/misc.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_25_2024_10_51_PM_[Changes]/shelved.patch
+/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_25_2024_10_52_PM_[Changes]/shelved.patch
+/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_25_2024_10_54_PM_[Changes]/shelved.patch
+/.idea/shelf/Uncommitted_changes_before_Merge_at_4_25_2024_10_10_PM_[Changes]/shelved.patch
+/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch
+/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_25_2024_10_51_PM__Changes_.xml
+/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_25_2024_10_52_PM__Changes_.xml
+/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_25_2024_10_54_PM__Changes_.xml
+/.idea/shelf/Uncommitted_changes_before_Merge_at_4_25_2024_10_10_PM__Changes_.xml
+/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml
+/.idea/workspace.xml
+/.idea/shelf/Uncommitted_changes_before_Merge_at_4_25_2024_10_10_PM_[Changes]/favicon.ico
+/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/favicon.ico
