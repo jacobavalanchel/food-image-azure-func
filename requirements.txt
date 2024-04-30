@@ -7,3 +7,4 @@ pandas
 fuzzywuzzy
 ollama
 flask_cors
+python-Levenshtein
