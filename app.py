@@ -1,5 +1,6 @@
 import os
 
+from PIL import Image
 from flask import (Flask, request,
                    send_file, jsonify)
 from flask_cors import CORS
@@ -53,7 +54,8 @@ def get_image():
         return jsonify({'message': 'No selected file'}), 400
 
     file.save('uploads/' + file.filename)
-    result=Food_Rec.food_recognition('uploads/' + file.filename)
+    test_image = Image.open('uploads/' + file.filename)
+    result=Food_Rec.food_recognition(test_image)
     print("预测结果为：", result)
     return jsonify({'message': 'File uploaded successfully', 'filename': file.filename}), 200
 

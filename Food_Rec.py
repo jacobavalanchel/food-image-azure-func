@@ -8,18 +8,17 @@ transform = transforms.Compose([
         transforms.ToTensor(),
     ])
 
+# 加载模型和权重
+default_model = VIT.vit_base_patch16_224(num_classes=100)
+default_model.load_state_dict(torch.load('./model/CFN.pth',map_location = torch.device('cpu')))
+
 
 # 读取类别文件的函数
-def read_file_to_list(file_path='labels.txt'):
-    # 初始化一个空列表来存储每一行的内容
+def read_file_to_list(file_path='categories.txt'):
     line_list = []
-    # 打开文件
     with open(file_path, 'r', encoding='utf-8') as file:
-        # 逐行读取文件
         for line in file:
-            # 将每一行的文本去除末尾的换行符并添加到列表中
             line_list.append(line.strip())
-    # 返回包含每一行内容的列表
     return line_list
 
 
@@ -27,7 +26,7 @@ classes_list = read_file_to_list()
 
 
 # 食物识别的函数
-def food_recognition(image, model, device):
+def food_recognition(image, model=default_model, device="cpu"):
     image = transform(image)
     image.unsqueeze_(dim=0)
 
@@ -43,9 +42,9 @@ def food_recognition(image, model, device):
 
 # 读取图片
 # test_image = Image.open("sample.jpg")
-
+#
 # result = food_recognition(test_image)
-
+#
 # print("预测结果为：",result)
 
 
