@@ -143,11 +143,11 @@ def init(app, db):
         })
 
     @app.route("/user/get_info", methods=["POST"])
-    # @jwt_required()
+    @jwt_required()
     def user_info():
         data = request.get_json()
         email = data.get("email")
-        # user_name = get_jwt_identity()
+        user_name = get_jwt_identity()
         the_user = Users.query.filter_by(username=user_name).first()
         print(the_user)
         if the_user is None:
