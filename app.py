@@ -51,11 +51,8 @@ def get_image():
     if file.filename == '':
         return jsonify({'message': 'No selected file'}), 400
 
-    # Save the uploaded file to a specific location or process it as needed
-    # For example, save it to a directory
     file.save('uploads/' + file.filename)
 
-    # You can return a success response or process the file further
     return jsonify({'message': 'File uploaded successfully', 'filename': file.filename}), 200
 
 
