@@ -1,15 +1,36 @@
+import os
+
 from flask import (Flask, request,
                    send_file, jsonify)
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
+from flask_sqlalchemy import SQLAlchemy
+import new_chat
+import Users
+import config
 
 # from ultralytics import YOLO
 
 app = Flask(__name__)
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+## User init
+Users.init(app, db)
 CORS(app)
+
+## Secret Key
+app.secret_key = config.FlaskConfig.APP_SECRET_KEY
+
+## jwt
+app.config['JWT_SECRET_KEY'] = config.FlaskConfig.JWT_SECRET_KEY
+jwt_mgr = JWTManager(app)
 
 
 @app.route('/response_json', methods=['GET'])
-def returnJson():
+def return_json():
     if request.method == 'GET':
         data = {
             "Modules": 17,
@@ -26,29 +47,9 @@ def get_image():
 
 @app.route('/get_result_detail', methods=['POST'])
 def get_result_detail():
-    result_detail = [{
-        "name": "能量供给",
-        "score": 3.5,
-        "scoreText": "这个食品非常适合你吃",
-        "RowLabels": ["项目", "当前值", "建议值", "单位"],
-        "RowContents": [
-            ["碳水化合物", 6, 12, "mg"],
-            ["脂肪", 6, 12, "mg"],
-            ["蛋白质", 6, 12, "mg"]
-        ]
-    }, {
-        "name": "糖代谢",
-        "score": 4.5,
-        "scoreLabel": "适合",
-        "scoreText": "这个食品糖:",
-        "RowLabels": ["项目", "当前值", "建议值", "单位"],
-        "RowContents": [
-            ["纤维素", 6, 12, "mg"],
-            ["游离糖", 6, 12, "mg"],
-            ["GI数", 6, 12, "mg"],
-        ],
-    },
-    ]
+    food_name="apple"
+    user_info="42岁，糖尿病患者"
+    result_detail=new_chat.handle_food_info_get(food_name,user_info)
     return jsonify(result_detail)
 
 

@@ -17,9 +17,6 @@ def bpipei(query, choices):
     result = process.extractOne(query, choices, scorer=scorer)
     return result[0] if result else None
 
-
-# food_name = input("请输入食物名称：\n")
-
 nutrient_dataset_path = 'nutrient_dataset.txt'
 df_nutrient = pd.read_csv(nutrient_dataset_path, encoding='utf-8')
 glycemic_index_dataset_path = 'food_GI.csv'
@@ -118,12 +115,11 @@ def handle_food_info_get(food_name, user_info):
     II_info_list = filtered_df3['Insulin index'].tolist()
 
     # user_info = input("请输入用户的个人信息 (包括年龄和所患疾病):\n")
-    response = ask_llm(food_name, filtered_df1, filtered_df2, filtered_df3, user_info)
+    # response = ask_llm(food_name, filtered_df1, filtered_df2, filtered_df3, user_info)
 
     output = {
-        "result_detail": gen_result_detail(nutri_info_list, GI_info_list, II_info_list),
-        "ai_response": response['message']['content']
+        "result_detail": gen_result_detail(nutri_info_list[0], GI_info_list, II_info_list),
+        # "ai_response": response['message']['content']
     }
     print(json.dumps(output, indent=4, ensure_ascii=False))
-
-handle_food_info_get("apple","42岁，糖尿病患者")
+    return output
