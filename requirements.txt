@@ -1,3 +1,6 @@
+Pillow
+torch
+torchvision
 Flask==2.2.2
 gunicorn
 Werkzeug==2.2.2
