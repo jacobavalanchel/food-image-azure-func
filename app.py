@@ -27,7 +27,9 @@ app.secret_key = config.FlaskConfig.APP_SECRET_KEY
 ## jwt
 app.config['JWT_SECRET_KEY'] = config.FlaskConfig.JWT_SECRET_KEY
 jwt_mgr = JWTManager(app)
-
+@app.route('/get_info', methods=['GET'])
+def get_info():
+    pass
 
 @app.route('/response_json', methods=['GET'])
 def return_json():
@@ -39,10 +41,22 @@ def return_json():
         return jsonify(data)
 
 
-@app.route('/get_image', methods=['POST'])
+@app.route('/upload_image', methods=['POST'])
 def get_image():
-    file_name = request.form.get('file_name')
-    return send_file(str(file_name), mimetype='image/jpg')
+    if 'file' not in request.files:
+        return jsonify({'message': 'No file part'}), 400
+
+    file = request.files['file']
+
+    if file.filename == '':
+        return jsonify({'message': 'No selected file'}), 400
+
+    # Save the uploaded file to a specific location or process it as needed
+    # For example, save it to a directory
+    file.save('uploads/' + file.filename)
+
+    # You can return a success response or process the file further
+    return jsonify({'message': 'File uploaded successfully', 'filename': file.filename}), 200
 
 
 @app.route('/get_result_detail', methods=['POST'])

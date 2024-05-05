@@ -1,5 +1,4 @@
 import json
-
 import ollama
 import pandas as pd
 from fuzzywuzzy import fuzz
@@ -117,8 +116,8 @@ def handle_food_info_get(food_name, user_info):
     II_info_list = filtered_df3['Insulin index'].tolist()
 
     # user_info = input("请输入用户的个人信息 (包括年龄和所患疾病):\n")
-    # response = ask_llm(food_name, filtered_df1, filtered_df2, filtered_df3, user_info)
-    response = "trial-response"
+    response = ask_llm(food_name, filtered_df1, filtered_df2, filtered_df3, user_info)
+    # response = "trial-response"
     output = {
         "result_detail": gen_result_detail(nutri_info_list[0], GI_info_list, II_info_list),
         # "ai_response": response['message']['content']
