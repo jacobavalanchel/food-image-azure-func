@@ -42,10 +42,10 @@ def food_recognition(image, model, device):
 
 
 # 读取图片
-test_image = Image.open("sample.jpg")
+# test_image = Image.open("sample.jpg")
 
-result = food_recognition(test_image)
+# result = food_recognition(test_image)
 
-print("预测结果为：",result)
+# print("预测结果为：",result)
 
 

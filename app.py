@@ -8,6 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 import new_chat
 import Users
 import config
+import Food_Rec
 
 # from ultralytics import YOLO
 
@@ -52,7 +53,8 @@ def get_image():
         return jsonify({'message': 'No selected file'}), 400
 
     file.save('uploads/' + file.filename)
-
+    result=Food_Rec.food_recognition('uploads/' + file.filename)
+    print("预测结果为：", result)
     return jsonify({'message': 'File uploaded successfully', 'filename': file.filename}), 200
 
 
