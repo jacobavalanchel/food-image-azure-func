@@ -17,9 +17,6 @@ def bpipei(query, choices):
     result = process.extractOne(query, choices, scorer=scorer)
     return result[0] if result else None
 
-
-# food_name = input("请输入食物名称：\n")
-
 nutrient_dataset_path = 'nutrient_dataset.txt'
 df_nutrient = pd.read_csv(nutrient_dataset_path, encoding='utf-8')
 glycemic_index_dataset_path = 'food_GI.csv'
@@ -60,18 +57,20 @@ def parse_nutri_info(nutri_info):
             current_value = nutri_info[item]  # to ceil
             if f"{nutrient}_推荐量" in nutri_info:
                 recommended_value = nutri_info[f"{nutrient}_推荐量"]  # to ceil
+                recommended_value = round(recommended_value, 4)
+                recommended_value = "{:.2f}%".format(recommended_value * 100)
             else:
                 recommended_value = "无推荐数据"
             row_content.append(nutrient)
             row_content.append(current_value)
-            row_content.append(recommended_value)
             row_content.append(unit)
+            row_content.append(recommended_value)
             rows.append(row_content)
     result_dict = {
         "name": "能量供给",
         "score": 3.5,
         "scoreText": "这个食品非常适合你吃",
-        "RowLabels": ["项目", "当前值", "建议值", "单位"],
+        "RowLabels": ["项目", "当前值", "单位", "百克占比"],
         "RowContents": rows,
     }
     return result_dict
@@ -118,12 +117,13 @@ def handle_food_info_get(food_name, user_info):
     II_info_list = filtered_df3['Insulin index'].tolist()
 
     # user_info = input("请输入用户的个人信息 (包括年龄和所患疾病):\n")
-    response = ask_llm(food_name, filtered_df1, filtered_df2, filtered_df3, user_info)
-
+    # response = ask_llm(food_name, filtered_df1, filtered_df2, filtered_df3, user_info)
+    response = "trial-response"
     output = {
-        "result_detail": gen_result_detail(nutri_info_list, GI_info_list, II_info_list),
-        "ai_response": response['message']['content']
+        "result_detail": gen_result_detail(nutri_info_list[0], GI_info_list, II_info_list),
+        # "ai_response": response['message']['content']
+        "ai_response":response,
     }
     print(json.dumps(output, indent=4, ensure_ascii=False))
-
-handle_food_info_get("apple","42岁，糖尿病患者")
+    return output
+# handle_food_info_get("apple","24岁健康男性")
