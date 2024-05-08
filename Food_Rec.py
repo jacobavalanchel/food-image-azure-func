@@ -1,5 +1,5 @@
 from PIL import Image
-from model import VIT
+from model import VIT, ConvNext
 import torch
 import torchvision.transforms as transforms
 
@@ -9,8 +9,8 @@ transform = transforms.Compose([
     ])
 
 # 加载模型和权重
-default_model = VIT.vit_base_patch16_224(num_classes=100)
-default_model.load_state_dict(torch.load('./model/CFN.pth',map_location = torch.device('cpu')))
+default_model = ConvNext.convnext_large(num_classes=110)
+default_model.load_state_dict(torch.load('./model/ConvNext.pth'))
 
 
 # 读取类别文件的函数
@@ -27,24 +27,25 @@ classes_list = read_file_to_list()
 
 # 食物识别的函数
 def food_recognition(image, model=default_model, device="cpu"):
-    image = transform(image)
-    image.unsqueeze_(dim=0)
+    image = transform(image).unsqueeze_(dim=0)
 
     # 将模型和数据放到设备上
     model = model.to(device)
     image = image.to(device)
 
     model.eval()
-    output = model(image)
+    with torch.no_grad():
+        output = model(image)
+
     prediction = torch.argmax(output, dim=1)
     return classes_list[prediction.item()]
 
 
 # 读取图片
-# test_image = Image.open("sample.jpg")
-#
-# result = food_recognition(test_image)
-#
-# print("预测结果为：",result)
+test_image = Image.open("sample3.jpg")
+
+result = food_recognition(test_image)
+
+print("预测结果为：",result)
 
 
