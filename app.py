@@ -88,6 +88,7 @@ def get_image():
 
     file.save('uploads/' + file.filename)
     test_image = Image.open('uploads/' + file.filename)
+    test_image=test_image.convert("RGB")
     result = Food_Rec.food_recognition(test_image)
     return jsonify({'result': result}), 200
 
