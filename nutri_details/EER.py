@@ -1,10 +1,10 @@
 import pandas as pd
 import json
 
-data = pd.read_csv(r"中国居民膳食能量需要量(EER).csv")
+data = pd.read_csv(r"./nutri_details/中国居民膳食能量需要量(EER).csv")
 
 
-def get_age_range(age):
+def get_eer_age_range(age):
     if age < 0.5:
         return '0~'
     elif age < 1:
@@ -82,22 +82,3 @@ def pal_info(age_range, gender, PA):
     except Exception as e:
         print("发生了一个错误：", e)
 
-
-def main():
-    user_age = input("请输入年龄：\n")
-    user_gender = input("请输入性别：\n")
-    user_PA = input("请输入PA（轻/中/重）：\n")
-    age = float(user_age)
-
-    age_range = get_age_range(age)
-    PAL_MJ, PAL_kcal = pal_info(age_range, user_gender, user_PA)
-
-    output = {
-        "PAL(MJ)": PAL_MJ,
-        "PAL(kcal)": PAL_kcal
-    }
-    print(json.dumps(output, indent=4, ensure_ascii=False))
-
-
-if __name__ == '__main__':
-    main()

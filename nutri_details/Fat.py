@@ -1,9 +1,9 @@
 import pandas as pd
 import json
 
-data =  pd.read_csv("./中国居民脂肪碳水推荐量.csv")
+data =  pd.read_csv(r"./nutri_details/中国居民脂肪碳水推荐量.csv")
 
-def get_age_range(age):
+def get_protein_fat_age_range(age):
     if age < 0.5:
         return '0~'
     elif age < 1:
@@ -31,21 +31,4 @@ def carbohydrates_info(age_range):
         row = matched_rows.iloc[0]  
         return row.to_dict()
 
-def main():
-    user_age = input("请输入年龄：\n")
-    age = float(user_age)
 
-    age_range = get_age_range(age)
-    carbohydrates_info_result = carbohydrates_info(age_range)
-
-    if isinstance(carbohydrates_info_result, str):
-        print(carbohydrates_info_result)
-    else:
-        output = {
-            "user_age": user_age,
-            "carbohydrates_info": carbohydrates_info_result
-        }
-        print(json.dumps(output, indent=4, ensure_ascii=False))
-
-if __name__ == '__main__':
-    main()
