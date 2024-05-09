@@ -6,7 +6,8 @@ from flask import (Flask, request,
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_sqlalchemy import SQLAlchemy
-
+from nutri_details.balanced_diet import balanced_diet_info
+from nutri_details.nature_food_suggestion import nature_food_suggestions_info
 import Food_Rec
 import Users
 import config
@@ -38,21 +39,27 @@ user_info = {
     "isPregnant": "否",
     "PA": "中",
     "userLabelData": [
-        {"key": 2, "title": "高血压患者"},
-        {"key": 3, "title": "注重精神健康"},
+        "高血压患者",
+        "注重精神健康",
     ],
     "userLabelCandidates": [
-        {"key": 0, "title": "中年人"},
-        {"key": 1, "title": "糖尿病患者"},
-        {"key": 2, "title": "高血压患者"},
-        {"key": 3, "title": "注重精神健康"},
+        "中年人",
+        "糖尿病患者",
+        "高血压患者",
+        "注重精神健康",
     ]
 }
+
 
 
 @app.route('/get_info', methods=['POST'])
 def get_info():
     return jsonify(user_info)
+
+
+@app.route('/get_suggestions', methods=['POST'])
+def get_suggestions():
+    return jsonify(balanced_diet_info)
 
 
 @app.route('/update_info', methods=['POST'])
@@ -88,15 +95,15 @@ def get_image():
 
     file.save('uploads/' + file.filename)
     test_image = Image.open('uploads/' + file.filename)
-    test_image=test_image.convert("RGB")
+    test_image = test_image.convert("RGB")
     result = Food_Rec.food_recognition(test_image)
     return jsonify({'result': result}), 200
 
 
 @app.route('/get_result_detail', methods=['POST'])
 def get_result_detail():
-    food_name = "apple"
-    user_desc = "42岁，糖尿病患者(debug)"
+    food_name = request.json["food_name"]
+    user_desc = new_chat.gen_user_desc(user_info)
     result_detail = new_chat.handle_food_info_get(food_name, user_desc, user_info)
     return jsonify(result_detail)
 

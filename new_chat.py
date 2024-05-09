@@ -7,8 +7,8 @@ from fuzzywuzzy import process
 
 from nutri_details.EER import pal_info, get_eer_age_range
 from nutri_details.Fat import get_protein_fat_age_range, carbohydrates_info
-from nutri_details.protein import ear_rni_info
 
+from nutri_details.protein import ear_rni_info
 
 def apipei(query, choices):
     match_scores = [(choice, fuzz.ratio(query, choice)) for choice in choices]
@@ -36,7 +36,7 @@ def match_info_from_db(food_name):
     matched_food1, match_score1 = apipei(food_name, df_nutrient['Descrip'])
     matched_food2 = bpipei(food_name, df_glycemic_index['Name'])
     matched_food3 = bpipei(food_name, df_insulin_index['Name'])
-
+    print(matched_food1)
     filtered_df1 = df_nutrient.loc[
         df_nutrient['Descrip'] == matched_food1, ['能量_千卡', '蛋白质_克', '脂肪_克', '碳水化合物_克', '糖_克',
                                                   '纤维_克', '维生素A_微克', '维生素B6_毫克', '维生素B12_微克',
@@ -47,6 +47,7 @@ def match_info_from_db(food_name):
                                                   '维生素C_推荐量', '维生素E_推荐量', '叶酸_推荐量', '烟酸_推荐量',
                                                   '核黄素_推荐量', '硫胺素_推荐量', '钙_推荐量', '铜_推荐量',
                                                   '镁_推荐量', '磷_推荐量', '硒_推荐量', '锌_推荐量']]
+    print(filtered_df1)
     filtered_df2 = df_glycemic_index[df_glycemic_index['Name'] == matched_food2]
     filtered_df3 = df_insulin_index[df_insulin_index['Name'] == matched_food3]
     return filtered_df1, filtered_df2, filtered_df3
@@ -69,6 +70,7 @@ def parse_nutri_info(nutri_info):
             row_content.append(nutrient)
             row_content.append(f"{current_value}({unit})")
             row_content.append(recommended_value)
+    print(f"row{rows}")
     result_dict = {
         "name": "能量供给",
         "score": 3.5,
@@ -156,11 +158,11 @@ def gen_result_detail(nutri_info_list, gi_info_list, ii_info_list, eer_info_list
     return result_detail
 
 
-def ask_llm(food_name, df1, df2, df3, user_info):
+def ask_llm(food_name, df1, df2, df3, user_desc):
     nutri_info = df1.to_json(orient='records')
     GI_info = df2.to_json(orient='records')
     II_info = df3.to_json(orient='records')
-    message = f"{food_name}（营养素信息：{nutri_info}，升糖指数：{GI_info}，胰岛素指数：{II_info}输出结果不需要显示）适合{user_info}的人吗？（只需要给出合理的建议）"
+    message = f"{food_name}（营养素信息：{nutri_info}，升糖指数：{GI_info}，胰岛素指数：{II_info}输出结果不需要显示）适合{user_desc}的人吗？（只需要给出合理的建议）"
     response = ollama.chat(model='llama2-chinese', messages=[
         {
             'role': 'user',
@@ -183,7 +185,6 @@ def handle_food_info_get(food_name, user_desc, user_info):
     II_info_list = filtered_df3['Insulin index'].tolist()
 
     # EER
-
     age = float(user_age)
     age_range = get_eer_age_range(age)
     PAL_MJ, PAL_kcal = pal_info(age_range, user_gender, user_PA)
@@ -204,6 +205,7 @@ def handle_food_info_get(food_name, user_desc, user_info):
     age_range = get_protein_fat_age_range(age)
     fat_carb_info_list = carbohydrates_info(age_range)
 
+    user_desc=gen_user_desc(user_info)
     # ai_response = ask_llm(food_name, filtered_df1, filtered_df2, filtered_df3, user_desc)
     with open("./trial-reply.txt", "r", encoding="utf-8") as file:
         content = file.read()
@@ -217,4 +219,13 @@ def handle_food_info_get(food_name, user_desc, user_info):
     print(json.dumps(output, indent=4, ensure_ascii=False))
     return output
 
+def gen_user_desc(user_info):
+    labels=user_info["userLabelData"]
+    age=user_info["age"]
+    gender=user_info["gender"]
+    PA=user_info["PA"]
+
+    return f"年龄：{age}，性别：{gender}，运动量：{PA}，身体情况：{'、'.join(labels)}"
+
 # handle_food_info_get("apple", "24岁健康男性", user_info)
+
