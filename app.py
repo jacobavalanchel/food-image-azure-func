@@ -7,7 +7,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_sqlalchemy import SQLAlchemy
 from nutri_details.balanced_diet import balanced_diet_info
-from nutri_details.nature_food_suggestion import nature_food_suggestions_info
+
 import Food_Rec
 import Users
 import config
@@ -102,7 +102,8 @@ def get_image():
 
 @app.route('/get_result_detail', methods=['POST'])
 def get_result_detail():
-    food_name = request.json["food_name"]
+    # food_name = request.json["food_name"]
+    food_name ="apple"
     user_desc = new_chat.gen_user_desc(user_info)
     result_detail = new_chat.handle_food_info_get(food_name, user_desc, user_info)
     return jsonify(result_detail)
